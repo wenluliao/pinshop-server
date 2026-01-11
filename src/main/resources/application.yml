@@ -1,0 +1,115 @@
+server:
+  port: 8080
+  shutdown: graceful
+  tomcat:
+    threads:
+      # 虚拟线程下不需要设置max-threads
+      max: 200
+
+spring:
+  application:
+    name: pinshop-server
+
+  # Java 25 Virtual Threads
+  threads:
+    virtual:
+      enabled: true
+
+  # Database
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 使用环境变量或local配置覆盖
+    # 优先级: 环境变量 > application-local.yml > 默认值
+    url: ${DB_URL:jdbc:mysql://localhost:3306/pinshop?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
+  # Redis
+  data:
+    redis:
+      # 使用环境变量或local配置覆盖
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 0
+      lettuce:
+        pool:
+          min-idle: 2
+          max-idle: 8
+          max-active: 16
+          max-wait: -1ms
+      timeout: 3000ms
+
+  # Profiles
+  profiles:
+    active: ${SPRING_PROFILE:local}
+
+  # SQL Initialization
+  sql:
+    init:
+      mode: never  # Using custom SchemaInitializer instead
+
+  # Cache
+  cache:
+    type: caffeine
+    cache-names:
+      - items
+      - users
+      - stockStatus
+    caffeine:
+      spec: maximumSize=10000,expireAfterWrite=5m
+
+  # Jackson
+  jackson:
+    time-zone: Asia/Shanghai
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      write-dates-as-timestamps: false
+
+# MyBatis-Flex
+mybatis-flex:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.flashbuy.domain.*.entity
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-column: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# RocketMQ
+rocketmq:
+  name-server: localhost:9876
+  producer:
+    group: seckill-producer-group
+    send-message-timeout: 3000
+    retry-times-when-send-failed: 2
+
+# Logging
+logging:
+  level:
+    com.flashbuy: DEBUG
+    com.mybatis-flex: DEBUG
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n'
+  async: true
+
+# Custom Config
+pinshop:
+  # Seckill Config
+  seckill:
+    stock-cache-prefix: "flash:stock:"
+    user-limit-prefix: "flash:user:"
+    queue-topic: "seckill-order-topic"
+    local-cache-size: 10000
+
+  # Rate Limiter
+  ratelimit:
+    enabled: true
+    permits-per-second: 100

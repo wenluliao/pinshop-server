@@ -1,0 +1,3996 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "PinShop Server",
+    "version": "v1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
+  "tags": [
+    {
+      "name": "AdminController",
+      "description": "Admin Dashboard API Controller"
+    },
+    {
+      "name": "PaymentController",
+      "description": "Payment Controller\nProvides payment creation and callback processing APIs"
+    },
+    {
+      "name": "GroupBuyController",
+      "description": "拼团中心-拼团服务\n\n&lt;p&gt;提供拼团发起、参与、查询等功能&lt;/p&gt;"
+    },
+    {
+      "name": "HealthController",
+      "description": "健康检查Controller - 最简单的测试端点"
+    },
+    {
+      "name": "UserController",
+      "description": "User Controller\nProvides user management APIs including login, profile, and address management"
+    },
+    {
+      "name": "ProductController",
+      "description": "商品中心-秒杀商品服务\n\n&lt;p&gt;提供秒杀商品列表、详情查询等功能&lt;/p&gt;"
+    },
+    {
+      "name": "SeckillController",
+      "description": "交易中心-秒杀服务\n\n&lt;p&gt;提供高并发秒杀抢购功能，采用三级缓存机制保障性能&lt;/p&gt;"
+    },
+    {
+      "name": "OrderController",
+      "description": "Order Controller\nProvides order query and management APIs"
+    }
+  ],
+  "paths": {
+    "/api/v1/user/login": {
+      "post": {
+        "summary": "User login\nSupports WeChat openid style login",
+        "deprecated": false,
+        "tags": [
+          "UserController"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/51cb5a19fbeb4ccda59cbfab5e696243"
+              },
+              "examples": {
+                "json": {
+                  "summary": "test data",
+                  "value": "{\n  \"openid\": \"\",\n  \"nickname\": \"\",\n  \"avatarUrl\": \"\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/d4a93d5b69e349f7884016b0f02b403d"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": 0,\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-user-login-POST",
+        "parameters": [
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/user/profile": {
+      "put": {
+        "summary": "Update user profile",
+        "deprecated": false,
+        "tags": [
+          "UserController"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/3c7d48c32d0c7cd9413b0757567073b8"
+              },
+              "examples": {
+                "json": {
+                  "summary": "test data",
+                  "value": "{\n  \"userId\": 0,\n  \"nickname\": \"\",\n  \"phone\": \"\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/2e2e10f941a0ac19f25c4a7520d458b1"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-user-profile-PUT",
+        "parameters": [
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      },
+      "get": {
+        "summary": "Get user profile",
+        "deprecated": false,
+        "tags": [
+          "UserController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/cd156cb8b87124404c84c30e3d09e7d6"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {\n    \"userId\": 0,\n    \"nickname\": \"\",\n    \"avatarUrl\": \"\",\n    \"phone\": \"\",\n    \"status\": 0\n  },\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-user-profile-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "query",
+            "description": "user ID",
+            "required": true,
+            "example": "0",
+            "name": "userId"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/user/addresses": {
+      "get": {
+        "summary": "Get user address list",
+        "deprecated": false,
+        "tags": [
+          "UserController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/f84fd0322537c36819a01436a0dbd3b6"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": [\n    {\n      \"addressId\": 0,\n      \"receiverName\": \"\",\n      \"receiverPhone\": \"\",\n      \"province\": \"\",\n      \"city\": \"\",\n      \"district\": \"\",\n      \"detailAddr\": \"\",\n      \"isDefault\": 0\n    }\n  ],\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-user-addresses-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "query",
+            "description": "user ID",
+            "required": true,
+            "example": "0",
+            "name": "userId"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/user/address": {
+      "post": {
+        "summary": "Add user address",
+        "deprecated": false,
+        "tags": [
+          "UserController"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/a4cabcfc8043619a3d7b6730f7209b54"
+              },
+              "examples": {
+                "json": {
+                  "summary": "test data",
+                  "value": "{\n  \"userId\": 0,\n  \"receiverName\": \"\",\n  \"receiverPhone\": \"\",\n  \"province\": \"\",\n  \"city\": \"\",\n  \"district\": \"\",\n  \"detailAddr\": \"\",\n  \"isDefault\": 0\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/d4a93d5b69e349f7884016b0f02b403d"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": 0,\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-user-address-POST",
+        "parameters": [
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/user/address/{addressId}": {
+      "delete": {
+        "summary": "Delete user address",
+        "deprecated": false,
+        "tags": [
+          "UserController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/2e2e10f941a0ac19f25c4a7520d458b1"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-user-address-{addressId}-DELETE",
+        "parameters": [
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "path",
+            "description": "address ID",
+            "required": true,
+            "example": "0",
+            "name": "addressId"
+          },
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "query",
+            "description": "user ID",
+            "required": true,
+            "example": "0",
+            "name": "userId"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update user address",
+        "deprecated": false,
+        "tags": [
+          "UserController"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/052b58e5a33e0d7dea116c6e72c53376"
+              },
+              "examples": {
+                "json": {
+                  "summary": "test data",
+                  "value": "{\n  \"userId\": 0,\n  \"receiverName\": \"\",\n  \"receiverPhone\": \"\",\n  \"province\": \"\",\n  \"city\": \"\",\n  \"district\": \"\",\n  \"detailAddr\": \"\",\n  \"isDefault\": 0\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/2e2e10f941a0ac19f25c4a7520d458b1"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-user-address-{addressId}-PUT",
+        "parameters": [
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "path",
+            "description": "address ID",
+            "required": true,
+            "example": "0",
+            "name": "addressId"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/user/address/{addressId}/default": {
+      "post": {
+        "summary": "Set default address",
+        "deprecated": false,
+        "tags": [
+          "UserController"
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "format": "int64",
+                    "description": "user ID",
+                    "type": "number",
+                    "example": "0"
+                  }
+                },
+                "required": [
+                  "userId"
+                ]
+              },
+              "examples": {
+                "json": {
+                  "summary": "test data",
+                  "value": "&0"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/2e2e10f941a0ac19f25c4a7520d458b1"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-user-address-{addressId}-default-POST",
+        "parameters": [
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "path",
+            "description": "address ID",
+            "required": true,
+            "example": "0",
+            "name": "addressId"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/health": {
+      "get": {
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "HealthController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/5963245c5b5e8beb06f53c2f9f98dd4d"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"mapKey\": {\n    \"waring\": \"You may use java.util.Object for Map value; smart-doc can't be handle.\"\n  }\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "health-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/ping": {
+      "get": {
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "HealthController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/a86d25410f5a4faf912f452c66e03074"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"mapKey1\": \"\",\n  \"mapKey2\": \"\"\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "ping-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/product/flash-list": {
+      "get": {
+        "summary": "获取秒杀商品流\n\n<p>\n返回当前可抢购的秒杀商品列表。\n前端用于首页展示秒杀商品卡片。\n</p>",
+        "deprecated": false,
+        "description": "建议前端每30秒刷新一次列表，获取最新库存状态",
+        "tags": [
+          "ProductController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/4dabcffbb9f9a634ef699122e06c5027"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": [\n    {\n      \"skuId\": 0,\n      \"title\": \"\",\n      \"imgUrl\": \"\",\n      \"flashPrice\": 0,\n      \"originalPrice\": 0,\n      \"stockPercent\": 0,\n      \"status\": 0\n    }\n  ],\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-product-flash-list-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "query",
+            "description": "时间段（可选，如\"08:00\"、\"12:00\"、\"20:00\"）",
+            "required": false,
+            "name": "timeSlot"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/product/detail/{skuId}": {
+      "get": {
+        "summary": "获取商品详情\n\n<p>\n返回指定SKU的商品详细信息。\n</p>",
+        "deprecated": false,
+        "tags": [
+          "ProductController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/388eafe398d013c10e7a03d03dfe963f"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {\n    \"skuId\": 0,\n    \"title\": \"\",\n    \"imgUrl\": \"\",\n    \"flashPrice\": 0,\n    \"originalPrice\": 0,\n    \"stockPercent\": 0,\n    \"status\": 0\n  },\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-product-detail-{skuId}-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "path",
+            "description": "商品SKU编号",
+            "required": true,
+            "example": "0",
+            "name": "skuId"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/product/categories": {
+      "get": {
+        "summary": "获取商品分类\n\n<p>\n返回商品分类列表，用于分类导航。\n</p>",
+        "deprecated": false,
+        "tags": [
+          "ProductController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/7fb29907321bcf259e566af25a78b727"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": [\n    {\n      \"categoryId\": 0,\n      \"categoryName\": \"\",\n      \"categoryIcon\": \"\"\n    }\n  ],\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-product-categories-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/product/search": {
+      "get": {
+        "summary": "搜索商品\n\n<p>\n根据关键词搜索商品。\n</p>",
+        "deprecated": false,
+        "tags": [
+          "ProductController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/cac4c6a3a7ba7166ee737807946f1059"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {\n    \"total\": 0,\n    \"products\": [\n      {\n        \"skuId\": 0,\n        \"title\": \"\",\n        \"imgUrl\": \"\",\n        \"flashPrice\": 0,\n        \"originalPrice\": 0,\n        \"stockPercent\": 0,\n        \"status\": 0\n      }\n    ]\n  },\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-product-search-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "query",
+            "description": "搜索关键词",
+            "required": true,
+            "name": "keyword"
+          },
+          {
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "in": "query",
+            "description": "页码（默认1）",
+            "required": true,
+            "example": "\"1\"",
+            "name": "pageNum"
+          },
+          {
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "in": "query",
+            "description": "每页大小（默认20）",
+            "required": true,
+            "example": "\"20\"",
+            "name": "pageSize"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/product/hot": {
+      "get": {
+        "summary": "获取热门商品\n\n<p>\n返回销量最高的热门商品列表。\n</p>",
+        "deprecated": false,
+        "tags": [
+          "ProductController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/4dabcffbb9f9a634ef699122e06c5027"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": [\n    {\n      \"skuId\": 0,\n      \"title\": \"\",\n      \"imgUrl\": \"\",\n      \"flashPrice\": 0,\n      \"originalPrice\": 0,\n      \"stockPercent\": 0,\n      \"status\": 0\n    }\n  ],\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-product-hot-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "in": "query",
+            "description": "返回数量（默认10）",
+            "required": true,
+            "example": "\"10\"",
+            "name": "limit"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/trade/seckill": {
+      "post": {
+        "summary": "执行秒杀下单\n\n<p>\n核心高并发接口，采用异步削峰架构。\n前端需轮询查询结果。\n</p>\n\n<p>\n业务流程：\n<ul>\n  <li>1. 本地缓存检查库存（阻挡90%无效请求）</li>\n  <li>2. Redis Lua脚本原子扣减库存</li>\n  <li>3. 发送MQ消息异步创建订单</li>\n  <li>4. 立即返回排队状态</li>\n</ul>\n</p>",
+        "deprecated": false,
+        "description": "1. 必须先登录；2. 接口含防刷限流；3. 单次限购1件",
+        "tags": [
+          "SeckillController"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/38ddcafe6b1404e475b97f7816436af1"
+              },
+              "examples": {
+                "json": {
+                  "summary": "test data",
+                  "value": "{\n  \"eventId\": 0,\n  \"skuId\": 0,\n  \"count\": 0,\n  \"userId\": 0\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/857e486023a261f1a87661e85c5b003a"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {\n    \"status\": 0,\n    \"message\": \"\",\n    \"orderId\": 0,\n    \"queueId\": \"\",\n    \"timestamp\": 0\n  },\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-trade-seckill-POST",
+        "parameters": [
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/trade/result/{queueId}": {
+      "get": {
+        "summary": "查询秒杀订单状态\n\n<p>\n前端通过此接口轮询获取秒杀订单的处理结果。\n建议轮询间隔：500ms-1000ms。\n</p>",
+        "deprecated": false,
+        "description": "轮询最多10次，超过仍未返回结果则视为失败",
+        "tags": [
+          "SeckillController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/857e486023a261f1a87661e85c5b003a"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {\n    \"status\": 0,\n    \"message\": \"\",\n    \"orderId\": 0,\n    \"queueId\": \"\",\n    \"timestamp\": 0\n  },\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-trade-result-{queueId}-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "path",
+            "description": "排队凭证ID（从秒杀下单接口返回）",
+            "required": true,
+            "name": "queueId"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/dashboard": {
+      "get": {
+        "summary": "Get dashboard data\nGET /api/v1/admin/dashboard",
+        "deprecated": false,
+        "tags": [
+          "AdminController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/bd7307e04cfb003b9f7448c634f055e9"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {\n    \"todayGMV\": 0,\n    \"newUserCount\": 0,\n    \"lowStockCount\": 0,\n    \"pendingShipmentCount\": 0,\n    \"timestamp\": 0\n  },\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-admin-dashboard-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/pay/create": {
+      "post": {
+        "summary": "Create payment",
+        "deprecated": false,
+        "tags": [
+          "PaymentController"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/45be7e518bfcbb25ac78da375d6e2249"
+              },
+              "examples": {
+                "json": {
+                  "summary": "test data",
+                  "value": "{\n  \"userId\": 0,\n  \"orderId\": 0,\n  \"payType\": \"\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/e67c272091d2e4d4ecedc647dbe52359"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {\n    \"paymentId\": \"\",\n    \"orderId\": 0,\n    \"amount\": 0,\n    \"payType\": \"\",\n    \"payUrl\": \"\"\n  },\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-pay-create-POST",
+        "parameters": [
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/pay/callback/wechat": {
+      "post": {
+        "summary": "WeChat payment callback",
+        "deprecated": false,
+        "tags": [
+          "PaymentController"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/36d31e077ebfca7ac879057e5683a2a0"
+              },
+              "examples": {
+                "json": {
+                  "summary": "test data",
+                  "value": "{\n  \"paymentId\": \"\",\n  \"transactionId\": \"\",\n  \"amount\": 0,\n  \"status\": \"\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/94e3d32fa43fbe1c67c36d27ee7aaa69"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"returnCode\": \"\",\n  \"returnMsg\": \"\"\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-pay-callback-wechat-POST",
+        "parameters": [
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/pay/callback/alipay": {
+      "post": {
+        "summary": "Alipay payment callback",
+        "deprecated": false,
+        "tags": [
+          "PaymentController"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/36d31e077ebfca7ac879057e5683a2a0"
+              },
+              "examples": {
+                "json": {
+                  "summary": "test data",
+                  "value": "{\n  \"paymentId\": \"\",\n  \"transactionId\": \"\",\n  \"amount\": 0,\n  \"status\": \"\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/94e3d32fa43fbe1c67c36d27ee7aaa69"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"returnCode\": \"\",\n  \"returnMsg\": \"\"\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-pay-callback-alipay-POST",
+        "parameters": [
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/pay/status": {
+      "get": {
+        "summary": "Get payment status",
+        "deprecated": false,
+        "tags": [
+          "PaymentController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/71eaafec35e657932b499a3d718d7ddb"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {\n    \"orderId\": 0,\n    \"status\": 0,\n    \"statusText\": \"\",\n    \"payAmount\": 0,\n    \"payTime\": \"yyyy-MM-dd HH:mm:ss\"\n  },\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-pay-status-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "query",
+            "description": "user ID",
+            "required": true,
+            "example": "0",
+            "name": "userId"
+          },
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "query",
+            "description": "order ID",
+            "required": true,
+            "example": "0",
+            "name": "orderId"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/order/list": {
+      "get": {
+        "summary": "Get user order list",
+        "deprecated": false,
+        "tags": [
+          "OrderController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/6de6a1c470ca98c33e5f9021c6711f5c"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {\n    \"total\": 0,\n    \"count\": 0,\n    \"orders\": [\n      {\n        \"orderId\": 0,\n        \"totalAmount\": 0,\n        \"payAmount\": 0,\n        \"status\": 0,\n        \"statusText\": \"\",\n        \"orderType\": \"\",\n        \"productName\": \"\",\n        \"productImage\": \"\",\n        \"productPrice\": 0,\n        \"createTime\": \"yyyy-MM-dd HH:mm:ss\",\n        \"payTime\": \"yyyy-MM-dd HH:mm:ss\"\n      }\n    ]\n  },\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-order-list-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "query",
+            "description": "user ID",
+            "required": true,
+            "example": "0",
+            "name": "userId"
+          },
+          {
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "in": "query",
+            "description": "order status (optional, 0 for all)",
+            "required": false,
+            "example": "0",
+            "name": "status"
+          },
+          {
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "in": "query",
+            "description": "page number (default 1)",
+            "required": true,
+            "example": "\"1\"",
+            "name": "pageNum"
+          },
+          {
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "in": "query",
+            "description": "page size (default 10)",
+            "required": true,
+            "example": "\"10\"",
+            "name": "pageSize"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/order/{orderId}": {
+      "get": {
+        "summary": "Get order detail",
+        "deprecated": false,
+        "tags": [
+          "OrderController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/6a97b31db0d5de01a5c0425abfe2cf62"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {\n    \"orderId\": 0,\n    \"totalAmount\": 0,\n    \"payAmount\": 0,\n    \"status\": 0,\n    \"statusText\": \"\",\n    \"orderType\": \"\",\n    \"productName\": \"\",\n    \"productImage\": \"\",\n    \"productPrice\": 0,\n    \"createTime\": \"yyyy-MM-dd HH:mm:ss\",\n    \"payTime\": \"yyyy-MM-dd HH:mm:ss\"\n  },\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-order-{orderId}-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "path",
+            "description": "order ID",
+            "required": true,
+            "example": "0",
+            "name": "orderId"
+          },
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "query",
+            "description": "user ID",
+            "required": true,
+            "example": "0",
+            "name": "userId"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/order/count": {
+      "get": {
+        "summary": "Get order count statistics",
+        "deprecated": false,
+        "tags": [
+          "OrderController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/0d17e602279f21690971e690534d572c"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {\n    \"total\": 0,\n    \"unpaid\": 0,\n    \"paid\": 0,\n    \"shipped\": 0,\n    \"completed\": 0,\n    \"cancelled\": 0\n  },\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-order-count-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "query",
+            "description": "user ID",
+            "required": true,
+            "example": "0",
+            "name": "userId"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/order/{orderId}/cancel": {
+      "post": {
+        "summary": "Cancel order",
+        "deprecated": false,
+        "tags": [
+          "OrderController"
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "format": "int64",
+                    "description": "user ID",
+                    "type": "number",
+                    "example": "0"
+                  }
+                },
+                "required": [
+                  "userId"
+                ]
+              },
+              "examples": {
+                "json": {
+                  "summary": "test data",
+                  "value": "&0"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/2e2e10f941a0ac19f25c4a7520d458b1"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-order-{orderId}-cancel-POST",
+        "parameters": [
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "path",
+            "description": "order ID",
+            "required": true,
+            "example": "0",
+            "name": "orderId"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/order/{orderId}/status": {
+      "get": {
+        "summary": "Get order status",
+        "deprecated": false,
+        "tags": [
+          "OrderController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/0764b910ff2b64146675d04040b5c981"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {\n    \"orderId\": 0,\n    \"status\": 0,\n    \"statusText\": \"\",\n    \"createTime\": \"yyyy-MM-dd HH:mm:ss\",\n    \"payTime\": \"yyyy-MM-dd HH:mm:ss\"\n  },\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-order-{orderId}-status-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "path",
+            "description": "order ID",
+            "required": true,
+            "example": "0",
+            "name": "orderId"
+          },
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "query",
+            "description": "user ID",
+            "required": true,
+            "example": "0",
+            "name": "userId"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/group/initiate": {
+      "post": {
+        "summary": "发起拼团\n\n<p>\n用户成为团长，创建一个新的拼团会话。\n</p>",
+        "deprecated": false,
+        "description": "用户支付成功后调用此接口",
+        "tags": [
+          "GroupBuyController"
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ruleId": {
+                    "format": "int64",
+                    "description": "拼团规则ID",
+                    "type": "number",
+                    "example": "0"
+                  },
+                  "userId": {
+                    "format": "int64",
+                    "description": "用户ID",
+                    "type": "number",
+                    "example": "0"
+                  },
+                  "skuId": {
+                    "format": "int64",
+                    "description": "商品SKU ID",
+                    "type": "number",
+                    "example": "0"
+                  }
+                },
+                "required": [
+                  "ruleId",
+                  "userId",
+                  "skuId"
+                ]
+              },
+              "examples": {
+                "json": {
+                  "summary": "test data",
+                  "value": "&0&0&0"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/d4a93d5b69e349f7884016b0f02b403d"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": 0,\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-group-initiate-POST",
+        "parameters": [
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/group/join": {
+      "post": {
+        "summary": "参与拼团\n\n<p>\n用户加入已有的拼团会话。\n</p>",
+        "deprecated": false,
+        "description": "用户支付成功后调用此接口",
+        "tags": [
+          "GroupBuyController"
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sessionId": {
+                    "format": "int64",
+                    "description": "拼团会话ID",
+                    "type": "number",
+                    "example": "0"
+                  },
+                  "userId": {
+                    "format": "int64",
+                    "description": "用户ID",
+                    "type": "number",
+                    "example": "0"
+                  },
+                  "skuId": {
+                    "format": "int64",
+                    "description": "商品SKU ID",
+                    "type": "number",
+                    "example": "0"
+                  }
+                },
+                "required": [
+                  "sessionId",
+                  "userId",
+                  "skuId"
+                ]
+              },
+              "examples": {
+                "json": {
+                  "summary": "test data",
+                  "value": "&0&0&0"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/2e2e10f941a0ac19f25c4a7520d458b1"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-group-join-POST",
+        "parameters": [
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/group/{skuId}/sessions": {
+      "get": {
+        "summary": "获取当前正在拼的团\n\n<p>\n返回指定商品正在进行的拼团会话列表。\n前端用于展示\"还有人在拼单\"功能。\n</p>",
+        "deprecated": false,
+        "description": "建议前端每10秒刷新一次，获取最新拼团状态",
+        "tags": [
+          "GroupBuyController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/8b51fe013d666dba3883617f4b677966"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": [\n    {\n      \"sessionId\": 0,\n      \"userAvatar\": \"\",\n      \"userName\": \"\",\n      \"missingNum\": 0,\n      \"timeLeft\": 0\n    }\n  ],\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-group-{skuId}-sessions-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "path",
+            "description": "商品SKU ID",
+            "required": true,
+            "example": "0",
+            "name": "skuId"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/group/my": {
+      "get": {
+        "summary": "获取我的拼团记录\n\n<p>\n返回用户参与的所有拼团记录。\n</p>",
+        "deprecated": false,
+        "tags": [
+          "GroupBuyController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/9410a0b91c4b61edc2c0cc3b326781a2"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {\n    \"total\": 0,\n    \"groups\": [\n      {\n        \"sessionId\": 0,\n        \"skuId\": 0,\n        \"status\": 0,\n        \"statusText\": \"\",\n        \"currentCount\": 0,\n        \"targetCount\": 0,\n        \"timeLeft\": 0,\n        \"createTime\": \"yyyy-MM-dd HH:mm:ss\"\n      }\n    ]\n  },\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-group-my-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "query",
+            "description": "用户ID",
+            "required": true,
+            "example": "0",
+            "name": "userId"
+          },
+          {
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "in": "query",
+            "description": "页码（默认1）",
+            "required": true,
+            "example": "\"1\"",
+            "name": "pageNum"
+          },
+          {
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "in": "query",
+            "description": "每页大小（默认10）",
+            "required": true,
+            "example": "\"10\"",
+            "name": "pageSize"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    },
+    "/api/v1/group/{sessionId}/detail": {
+      "get": {
+        "summary": "获取拼团详情\n\n<p>\n返回指定拼团会话的详细信息，包括所有成员列表。\n</p>",
+        "deprecated": false,
+        "tags": [
+          "GroupBuyController"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/a19dfded3a48cf587ac88d99b2f0fb93"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "test data",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {\n    \"sessionId\": 0,\n    \"skuId\": 0,\n    \"status\": 0,\n    \"statusText\": \"\",\n    \"currentCount\": 0,\n    \"targetCount\": 0,\n    \"missingCount\": 0,\n    \"timeLeft\": 0,\n    \"expireTime\": \"yyyy-MM-dd HH:mm:ss\",\n    \"members\": [\n      {\n        \"userId\": 0,\n        \"userName\": \"\",\n        \"userAvatar\": \"\",\n        \"isInitiator\": true\n      }\n    ]\n  },\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/da0c932b0e6d3b90859201037a7929ee"
+                },
+                "examples": {
+                  "json": {
+                    "summary": "response example",
+                    "value": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": {},\n  \"timestamp\": 1709823456789\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "api-v1-group-{sessionId}-detail-GET",
+        "parameters": [
+          {
+            "schema": {
+              "format": "int64",
+              "type": "number"
+            },
+            "in": "path",
+            "description": "拼团会话ID",
+            "required": true,
+            "example": "0",
+            "name": "sessionId"
+          },
+          {
+            "schema": {
+              "format": "string",
+              "type": "string"
+            },
+            "in": "header",
+            "description": "认证Token (Bearer {jwt_token})",
+            "required": false,
+            "name": "Authorization"
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ed754232fb2bdf590bcc26aba799beae": {
+        "properties": {
+          "skuId": {
+            "format": "int64",
+            "description": "商品SKU编号",
+            "type": "number",
+            "example": "0"
+          },
+          "title": {
+            "format": "string",
+            "description": "商品标题",
+            "type": "string"
+          },
+          "imgUrl": {
+            "format": "string",
+            "description": "商品主图URL",
+            "type": "string"
+          },
+          "flashPrice": {
+            "description": "秒杀价格",
+            "example": "0"
+          },
+          "originalPrice": {
+            "description": "原价（划线价）",
+            "example": "0"
+          },
+          "stockPercent": {
+            "format": "int32",
+            "description": "剩余库存百分比（0-100，用于前端进度条显示）",
+            "type": "integer",
+            "example": "0"
+          },
+          "status": {
+            "format": "int32",
+            "description": "状态（1:抢购中 2:已抢光）",
+            "type": "integer",
+            "example": "0"
+          }
+        }
+      },
+      "4dabcffbb9f9a634ef699122e06c5027": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/e8105cc96d70913bfb4521803969636b"
+            }
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "dfcaca810592df45d261b3577fc9fc3f": {
+        "properties": {
+          "userId": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "nickname": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "avatarUrl": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "phone": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "status": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          }
+        }
+      },
+      "d751713988987e9331980363e24189ce": {},
+      "71eaafec35e657932b499a3d718d7ddb": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据(object)",
+            "$ref": "#/components/schemas/2d2880930c48e089523a4522ce056faa"
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "0764b910ff2b64146675d04040b5c981": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据(object)",
+            "$ref": "#/components/schemas/46a9ce9352f7ea05f3f33c1da361791e"
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "38ddcafe6b1404e475b97f7816436af1": {
+        "properties": {
+          "eventId": {
+            "format": "int64",
+            "description": "秒杀场次ID（必填）",
+            "type": "number",
+            "example": "0"
+          },
+          "skuId": {
+            "format": "int64",
+            "description": "商品SKU编号（必填）",
+            "type": "number",
+            "example": "0"
+          },
+          "count": {
+            "format": "int32",
+            "description": "购买数量（可选，默认1，单次限购1件）",
+            "type": "integer",
+            "example": "0"
+          },
+          "userId": {
+            "format": "int64",
+            "description": "用户ID（必填，从登录Token中获取）",
+            "type": "number",
+            "example": "0"
+          }
+        }
+      },
+      "cd156cb8b87124404c84c30e3d09e7d6": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据(object)",
+            "$ref": "#/components/schemas/dfcaca810592df45d261b3577fc9fc3f"
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "8b51fe013d666dba3883617f4b677966": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/09c9eec20f91ed2cb5420140f0162ecf"
+            }
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "2e2e10f941a0ac19f25c4a7520d458b1": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据(object)",
+            "type": "object"
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "94e3d32fa43fbe1c67c36d27ee7aaa69": {
+        "properties": {
+          "returnCode": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "returnMsg": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          }
+        }
+      },
+      "9410a0b91c4b61edc2c0cc3b326781a2": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据(object)",
+            "$ref": "#/components/schemas/b89f91399864ff59bfc61ea087eb3599"
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "939f3343dc5cdabf9ef833a2f99429e7": {
+        "properties": {
+          "total": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "count": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "orders": {
+            "description": "No comments found.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/9e8905ce44553390de390f47fbc8b033"
+            }
+          }
+        }
+      },
+      "2d2880930c48e089523a4522ce056faa": {
+        "properties": {
+          "orderId": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "status": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "statusText": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "payAmount": {
+            "description": "No comments found.",
+            "example": "0"
+          },
+          "payTime": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string",
+            "example": "yyyy-MM-dd HH:mm:ss"
+          }
+        }
+      },
+      "5963245c5b5e8beb06f53c2f9f98dd4d": {
+        "properties": {
+          "mapKey": {
+            "description": "A map key.(object)",
+            "$ref": "#/components/schemas/ff524bcce724f3f7b5d3a0d5d2a45cfe"
+          }
+        }
+      },
+      "a19dfded3a48cf587ac88d99b2f0fb93": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据(object)",
+            "$ref": "#/components/schemas/bdfa4268c79ce5057c1654d968615dcf"
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "defaultPrimitive": {
+        "format": "string",
+        "type": "string"
+      },
+      "9e8905ce44553390de390f47fbc8b033": {
+        "properties": {
+          "orderId": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "totalAmount": {
+            "description": "No comments found.",
+            "example": "0"
+          },
+          "payAmount": {
+            "description": "No comments found.",
+            "example": "0"
+          },
+          "status": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "statusText": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "orderType": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "productName": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "productImage": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "productPrice": {
+            "description": "No comments found.",
+            "example": "0"
+          },
+          "createTime": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string",
+            "example": "yyyy-MM-dd HH:mm:ss"
+          },
+          "payTime": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string",
+            "example": "yyyy-MM-dd HH:mm:ss"
+          }
+        }
+      },
+      "96e8a5750715bcc8925cbe172b1a8093": {
+        "properties": {
+          "addressId": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "receiverName": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "receiverPhone": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "province": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "city": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "district": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "detailAddr": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "isDefault": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          }
+        }
+      },
+      "f84fd0322537c36819a01436a0dbd3b6": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/96e8a5750715bcc8925cbe172b1a8093"
+            }
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "46a9ce9352f7ea05f3f33c1da361791e": {
+        "properties": {
+          "orderId": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "status": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "statusText": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "createTime": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string",
+            "example": "yyyy-MM-dd HH:mm:ss"
+          },
+          "payTime": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string",
+            "example": "yyyy-MM-dd HH:mm:ss"
+          }
+        }
+      },
+      "83c6f2daad4ff1df851a2cc1d9595e9d": {
+        "properties": {
+          "total": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "products": {
+            "description": "No comments found.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ed754232fb2bdf590bcc26aba799beae"
+            }
+          }
+        }
+      },
+      "d4a93d5b69e349f7884016b0f02b403d": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "format": "int64",
+            "description": "业务数据",
+            "type": "number"
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "9d44c0005f8e11bc8738a7db8c3b3868": {
+        "properties": {
+          "status": {
+            "format": "int32",
+            "description": "业务状态码（0:排队中 1:成功 -1:失败）",
+            "type": "integer",
+            "example": "0"
+          },
+          "message": {
+            "format": "string",
+            "description": "状态描述信息",
+            "type": "string"
+          },
+          "orderId": {
+            "format": "int64",
+            "description": "订单ID（成功时返回，排队或失败时为null）",
+            "type": "number",
+            "example": "0"
+          },
+          "queueId": {
+            "format": "string",
+            "description": "排队凭证ID（排队时返回，用于前端轮询查询）",
+            "type": "string"
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳（毫秒）",
+            "type": "number",
+            "example": "0"
+          }
+        }
+      },
+      "b89f91399864ff59bfc61ea087eb3599": {
+        "properties": {
+          "total": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "groups": {
+            "description": "No comments found.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/70a35442deda44889df342102b732da2"
+            }
+          }
+        }
+      },
+      "bdfa4268c79ce5057c1654d968615dcf": {
+        "properties": {
+          "sessionId": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "skuId": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "status": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "statusText": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "currentCount": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "targetCount": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "missingCount": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "timeLeft": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "expireTime": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string",
+            "example": "yyyy-MM-dd HH:mm:ss"
+          },
+          "members": {
+            "description": "No comments found.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/8dc98d17bc4be889f9b7d4a1279b8281"
+            }
+          }
+        }
+      },
+      "9d8f4c2dfb04a0b063f09284b817cf09": {
+        "properties": {
+          "ruleId": {
+            "format": "int64",
+            "description": "拼团规则ID",
+            "type": "number",
+            "example": "0"
+          },
+          "userId": {
+            "format": "int64",
+            "description": "用户ID",
+            "type": "number",
+            "example": "0"
+          },
+          "skuId": {
+            "format": "int64",
+            "description": "商品SKU ID",
+            "type": "number",
+            "example": "0"
+          }
+        },
+        "required": [
+          "ruleId",
+          "userId",
+          "skuId"
+        ]
+      },
+      "a86d25410f5a4faf912f452c66e03074": {
+        "properties": {
+          "mapKey": {
+            "format": "string",
+            "description": "A map key.",
+            "type": "string"
+          }
+        }
+      },
+      "cac4c6a3a7ba7166ee737807946f1059": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据(object)",
+            "$ref": "#/components/schemas/83c6f2daad4ff1df851a2cc1d9595e9d"
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "8dc98d17bc4be889f9b7d4a1279b8281": {
+        "properties": {
+          "userId": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "userName": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "userAvatar": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "isInitiator": {
+            "format": "boolean",
+            "description": "No comments found.",
+            "type": "boolean",
+            "example": "true"
+          }
+        }
+      },
+      "857e486023a261f1a87661e85c5b003a": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据(object)",
+            "$ref": "#/components/schemas/9d44c0005f8e11bc8738a7db8c3b3868"
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "e67c272091d2e4d4ecedc647dbe52359": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据(object)",
+            "$ref": "#/components/schemas/a1bf2f9a2cedc5f8be18a991b7d87c63"
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "70a35442deda44889df342102b732da2": {
+        "properties": {
+          "sessionId": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "skuId": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "status": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "statusText": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "currentCount": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "targetCount": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "timeLeft": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "createTime": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string",
+            "example": "yyyy-MM-dd HH:mm:ss"
+          }
+        }
+      },
+      "fd125692756d123c0e2a7e7e98842df8": {
+        "properties": {
+          "total": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "unpaid": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "paid": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "shipped": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "completed": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "cancelled": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          }
+        }
+      },
+      "6a97b31db0d5de01a5c0425abfe2cf62": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据(object)",
+            "$ref": "#/components/schemas/86766543213a822e4897d91c3fa5b4bb"
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "36d31e077ebfca7ac879057e5683a2a0": {
+        "properties": {
+          "paymentId": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "transactionId": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "amount": {
+            "description": "No comments found.",
+            "example": "0"
+          },
+          "status": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          }
+        }
+      },
+      "0d17e602279f21690971e690534d572c": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据(object)",
+            "$ref": "#/components/schemas/fd125692756d123c0e2a7e7e98842df8"
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "a1bf2f9a2cedc5f8be18a991b7d87c63": {
+        "properties": {
+          "paymentId": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "orderId": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "amount": {
+            "description": "No comments found.",
+            "example": "0"
+          },
+          "payType": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "payUrl": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          }
+        }
+      },
+      "288c302109dc389aea3311b8d9a9d8be": {
+        "properties": {
+          "categoryId": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "categoryName": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "categoryIcon": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          }
+        }
+      },
+      "6de6a1c470ca98c33e5f9021c6711f5c": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据(object)",
+            "$ref": "#/components/schemas/939f3343dc5cdabf9ef833a2f99429e7"
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "09c9eec20f91ed2cb5420140f0162ecf": {
+        "properties": {
+          "sessionId": {
+            "format": "int64",
+            "description": "拼团会话ID",
+            "type": "number",
+            "example": "0"
+          },
+          "userAvatar": {
+            "format": "string",
+            "description": "团长头像URL",
+            "type": "string"
+          },
+          "userName": {
+            "format": "string",
+            "description": "团长昵称（脱敏显示，如\"张***\"）",
+            "type": "string"
+          },
+          "missingNum": {
+            "format": "int32",
+            "description": "还差几人成团",
+            "type": "integer",
+            "example": "0"
+          },
+          "timeLeft": {
+            "format": "int64",
+            "description": "剩余时间（毫秒）",
+            "type": "number",
+            "example": "0"
+          }
+        }
+      },
+      "7fb29907321bcf259e566af25a78b727": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/288c302109dc389aea3311b8d9a9d8be"
+            }
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "721ac085c302421b2bb538e284cd55b7": {
+        "properties": {
+          "todayGMV": {
+            "description": "No comments found.",
+            "example": "0"
+          },
+          "newUserCount": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "lowStockCount": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "pendingShipmentCount": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          }
+        }
+      },
+      "e8105cc96d70913bfb4521803969636b": {
+        "properties": {
+          "skuId": {
+            "format": "int64",
+            "description": "商品SKU编号",
+            "type": "number",
+            "example": "0"
+          },
+          "title": {
+            "format": "string",
+            "description": "商品标题",
+            "type": "string"
+          },
+          "imgUrl": {
+            "format": "string",
+            "description": "商品主图URL",
+            "type": "string"
+          },
+          "flashPrice": {
+            "description": "秒杀价格",
+            "example": "0"
+          },
+          "originalPrice": {
+            "description": "原价（划线价）",
+            "example": "0"
+          },
+          "stockPercent": {
+            "format": "int32",
+            "description": "剩余库存百分比（0-100，用于前端进度条显示）",
+            "type": "integer",
+            "example": "0"
+          },
+          "status": {
+            "format": "int32",
+            "description": "状态（1:抢购中 2:已抢光）",
+            "type": "integer",
+            "example": "0"
+          }
+        }
+      },
+      "388eafe398d013c10e7a03d03dfe963f": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据(object)",
+            "$ref": "#/components/schemas/e8105cc96d70913bfb4521803969636b"
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "0a27b0c819265152eb0f7d4684aba8fd": {
+        "properties": {
+          "sessionId": {
+            "format": "int64",
+            "description": "拼团会话ID",
+            "type": "number",
+            "example": "0"
+          },
+          "userId": {
+            "format": "int64",
+            "description": "用户ID",
+            "type": "number",
+            "example": "0"
+          },
+          "skuId": {
+            "format": "int64",
+            "description": "商品SKU ID",
+            "type": "number",
+            "example": "0"
+          }
+        },
+        "required": [
+          "sessionId",
+          "userId",
+          "skuId"
+        ]
+      },
+      "ff524bcce724f3f7b5d3a0d5d2a45cfe": {
+        "properties": {
+          "any object": {
+            "description": "any object.(object)",
+            "type": "object"
+          }
+        }
+      },
+      "052b58e5a33e0d7dea116c6e72c53376": {
+        "properties": {
+          "userId": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "receiverName": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "receiverPhone": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "province": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "city": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "district": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "detailAddr": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "isDefault": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          }
+        }
+      },
+      "bd7307e04cfb003b9f7448c634f055e9": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据(object)",
+            "$ref": "#/components/schemas/721ac085c302421b2bb538e284cd55b7"
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "51cb5a19fbeb4ccda59cbfab5e696243": {
+        "properties": {
+          "openid": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "nickname": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "avatarUrl": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          }
+        }
+      },
+      "3c7d48c32d0c7cd9413b0757567073b8": {
+        "properties": {
+          "userId": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "nickname": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "phone": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          }
+        }
+      },
+      "5d4bef8bfb51788580d949d2c6b0d679": {
+        "properties": {
+          "userId": {
+            "format": "int64",
+            "description": "user ID",
+            "type": "number",
+            "example": "0"
+          }
+        },
+        "required": [
+          "userId"
+        ]
+      },
+      "45be7e518bfcbb25ac78da375d6e2249": {
+        "properties": {
+          "userId": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "orderId": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "payType": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          }
+        }
+      },
+      "86766543213a822e4897d91c3fa5b4bb": {
+        "properties": {
+          "orderId": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "totalAmount": {
+            "description": "No comments found.",
+            "example": "0"
+          },
+          "payAmount": {
+            "description": "No comments found.",
+            "example": "0"
+          },
+          "status": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          },
+          "statusText": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "orderType": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "productName": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "productImage": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "productPrice": {
+            "description": "No comments found.",
+            "example": "0"
+          },
+          "createTime": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string",
+            "example": "yyyy-MM-dd HH:mm:ss"
+          },
+          "payTime": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string",
+            "example": "yyyy-MM-dd HH:mm:ss"
+          }
+        }
+      },
+      "da0c932b0e6d3b90859201037a7929ee": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "description": "业务状态码",
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "format": "string",
+            "description": "响应消息",
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "description": "业务数据(object)",
+            "type": "object"
+          },
+          "timestamp": {
+            "format": "int64",
+            "description": "响应时间戳(毫秒)",
+            "type": "number",
+            "example": "1709823456789"
+          }
+        }
+      },
+      "a4cabcfc8043619a3d7b6730f7209b54": {
+        "properties": {
+          "userId": {
+            "format": "int64",
+            "description": "No comments found.",
+            "type": "number",
+            "example": "0"
+          },
+          "receiverName": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "receiverPhone": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "province": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "city": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "district": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "detailAddr": {
+            "format": "string",
+            "description": "No comments found.",
+            "type": "string"
+          },
+          "isDefault": {
+            "format": "int32",
+            "description": "No comments found.",
+            "type": "integer",
+            "example": "0"
+          }
+        }
+      }
+    }
+  }
+}

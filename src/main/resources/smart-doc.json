@@ -1,0 +1,114 @@
+{
+  "serverUrl": "http://localhost:8080",
+  "isCloud": false,
+  "packageFilters": "com.flashbuy.api.*",
+  "allInOne": true,
+  "coverOld": true,
+  "skipTransientField": true,
+  "checkEnumFields": true,
+  "projectName": "PinShop Server API",
+  "projectId": "pinshop-server",
+  "outPath": "target/smart-doc/html",
+  "openPath": "target/smart-doc/openapi",
+  "requestHeaders": [
+    {
+      "name": "Authorization",
+      "type": "string",
+      "desc": "认证Token (Bearer {jwt_token})",
+      "required": false,
+      "since": "-"
+    }
+  ],
+  "responseAdvice": [
+    {
+      "className": "com.flashbuy.common.Result"
+    }
+  ],
+  "errorCodes": [
+    {
+      "code": 200,
+      "desc": "成功"
+    },
+    {
+      "code": 400,
+      "desc": "业务异常"
+    },
+    {
+      "code": 401,
+      "desc": "未登录或Token失效"
+    },
+    {
+      "code": 403,
+      "desc": "无权限访问"
+    },
+    {
+      "code": 500,
+      "desc": "系统错误"
+    },
+    {
+      "code": 4001,
+      "desc": "库存不足"
+    },
+    {
+      "code": 4002,
+      "desc": "未登录"
+    },
+    {
+      "code": 4003,
+      "desc": "重复购买"
+    }
+  ],
+  "customResponseFields": [
+    {
+      "name": "code",
+      "desc": "业务状态码",
+      "ownerClassName": "com.flashbuy.common.Result",
+      "value": "200"
+    },
+    {
+      "name": "message",
+      "desc": "响应消息",
+      "ownerClassName": "com.flashbuy.common.Result",
+      "value": "success"
+    },
+    {
+      "name": "data",
+      "desc": "业务数据",
+      "ownerClassName": "com.flashbuy.common.Result"
+    },
+    {
+      "name": "timestamp",
+      "desc": "响应时间戳(毫秒)",
+      "ownerClassName": "com.flashbuy.common.Result",
+      "value": "1709823456789"
+    }
+  ],
+  "inlineEnum": true,
+  "recursionLimit": 7,
+  "postmanEnv": {
+    "name": "PinShop开发环境",
+    "host": "localhost",
+    "port": "8080",
+    "protocol": "http",
+    "environments": [
+      {
+        "name": "开发环境",
+        "host": "localhost",
+        "port": "8080",
+        "protocol": "http"
+      },
+      {
+        "name": "测试环境",
+        "host": "test.pinshop.com",
+        "port": null,
+        "protocol": "https"
+      },
+      {
+        "name": "生产环境",
+        "host": "api.pinshop.com",
+        "port": null,
+        "protocol": "https"
+      }
+    ]
+  }
+}

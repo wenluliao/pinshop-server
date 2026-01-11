@@ -1,0 +1,372 @@
+{
+  "info": {
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "d052a743-ecae-493d-834f-3368d3abdd9e",
+    "name": "PinShop Server"
+  },
+  "item": [
+    {
+      "name": "商品中心-秒杀商品服务\n\n&lt;p&gt;提供秒杀商品列表、详情查询等功能&lt;/p&gt;",
+      "item": [
+        {
+          "name": "获取秒杀商品流\n\n<p>\n返回当前可抢购的秒杀商品列表。\n前端用于首页展示秒杀商品卡片。\n</p>",
+          "request": {
+            "method": "GET",
+            "body": {
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/product/flash-list?timeSlot=",
+              "protocol": "http",
+              "path": [
+                "api",
+                "v1",
+                "product",
+                "flash-list"
+              ],
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "query": [
+                {
+                  "key": "timeSlot",
+                  "value": "",
+                  "description": "时间段（可选，如\"08:00\"、\"12:00\"、\"20:00\"）"
+                }
+              ],
+              "variable": []
+            },
+            "description": "获取秒杀商品流\n\n<p>\n返回当前可抢购的秒杀商品列表。\n前端用于首页展示秒杀商品卡片。\n</p>",
+            "header": [
+              {
+                "key": "Authorization",
+                "type": "text",
+                "disabled": true,
+                "name": "Authorization",
+                "description": "认证Token (Bearer {jwt_token})"
+              }
+            ]
+          },
+          "description": "建议前端每30秒刷新一次列表，获取最新库存状态"
+        },
+        {
+          "name": "获取商品详情\n\n<p>\n返回指定SKU的商品详细信息。\n</p>",
+          "request": {
+            "method": "GET",
+            "body": {
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/product/detail/:skuId",
+              "protocol": "http",
+              "path": [
+                "api",
+                "v1",
+                "product",
+                "detail",
+                ":skuId"
+              ],
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "query": [],
+              "variable": [
+                {
+                  "key": "skuId",
+                  "value": "0",
+                  "description": "商品SKU编号"
+                }
+              ]
+            },
+            "description": "获取商品详情\n\n<p>\n返回指定SKU的商品详细信息。\n</p>",
+            "header": [
+              {
+                "key": "Authorization",
+                "type": "text",
+                "disabled": true,
+                "name": "Authorization",
+                "description": "认证Token (Bearer {jwt_token})"
+              }
+            ]
+          },
+          "description": "获取商品详情\n\n<p>\n返回指定SKU的商品详细信息。\n</p>"
+        }
+      ]
+    },
+    {
+      "name": "交易中心-秒杀服务\n\n&lt;p&gt;提供高并发秒杀抢购功能，采用三级缓存机制保障性能&lt;/p&gt;",
+      "item": [
+        {
+          "name": "执行秒杀下单\n\n<p>\n核心高并发接口，采用异步削峰架构。\n前端需轮询查询结果。\n</p>\n\n<p>\n业务流程：\n<ul>\n  <li>1. 本地缓存检查库存（阻挡90%无效请求）</li>\n  <li>2. Redis Lua脚本原子扣减库存</li>\n  <li>3. 发送MQ消息异步创建订单</li>\n  <li>4. 立即返回排队状态</li>\n</ul>\n</p>",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventId\": 0,\n  \"skuId\": 0,\n  \"count\": 0,\n  \"userId\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/trade/seckill",
+              "protocol": "http",
+              "path": [
+                "api",
+                "v1",
+                "trade",
+                "seckill"
+              ],
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "query": [],
+              "variable": []
+            },
+            "description": "执行秒杀下单\n\n<p>\n核心高并发接口，采用异步削峰架构。\n前端需轮询查询结果。\n</p>\n\n<p>\n业务流程：\n<ul>\n  <li>1. 本地缓存检查库存（阻挡90%无效请求）</li>\n  <li>2. Redis Lua脚本原子扣减库存</li>\n  <li>3. 发送MQ消息异步创建订单</li>\n  <li>4. 立即返回排队状态</li>\n</ul>\n</p>",
+            "header": [
+              {
+                "key": "Authorization",
+                "type": "text",
+                "disabled": true,
+                "name": "Authorization",
+                "description": "认证Token (Bearer {jwt_token})"
+              }
+            ]
+          },
+          "description": "1. 必须先登录；2. 接口含防刷限流；3. 单次限购1件"
+        },
+        {
+          "name": "查询秒杀订单状态\n\n<p>\n前端通过此接口轮询获取秒杀订单的处理结果。\n建议轮询间隔：500ms-1000ms。\n</p>",
+          "request": {
+            "method": "GET",
+            "body": {
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/trade/result/:queueId",
+              "protocol": "http",
+              "path": [
+                "api",
+                "v1",
+                "trade",
+                "result",
+                ":queueId"
+              ],
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "query": [],
+              "variable": [
+                {
+                  "key": "queueId",
+                  "value": "",
+                  "description": "排队凭证ID（从秒杀下单接口返回）"
+                }
+              ]
+            },
+            "description": "查询秒杀订单状态\n\n<p>\n前端通过此接口轮询获取秒杀订单的处理结果。\n建议轮询间隔：500ms-1000ms。\n</p>",
+            "header": [
+              {
+                "key": "Authorization",
+                "type": "text",
+                "disabled": true,
+                "name": "Authorization",
+                "description": "认证Token (Bearer {jwt_token})"
+              }
+            ]
+          },
+          "description": "轮询最多10次，超过仍未返回结果则视为失败"
+        }
+      ]
+    },
+    {
+      "name": "Admin Dashboard API Controller",
+      "item": [
+        {
+          "name": "Get dashboard data\nGET /api/v1/admin/dashboard",
+          "request": {
+            "method": "GET",
+            "body": {
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/admin/dashboard",
+              "protocol": "http",
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "dashboard"
+              ],
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "query": [],
+              "variable": []
+            },
+            "description": "Get dashboard data\nGET /api/v1/admin/dashboard",
+            "header": [
+              {
+                "key": "Authorization",
+                "type": "text",
+                "disabled": true,
+                "name": "Authorization",
+                "description": "认证Token (Bearer {jwt_token})"
+              }
+            ]
+          },
+          "description": "Get dashboard data\nGET /api/v1/admin/dashboard"
+        }
+      ]
+    },
+    {
+      "name": "拼团中心-拼团服务\n\n&lt;p&gt;提供拼团发起、参与、查询等功能&lt;/p&gt;",
+      "item": [
+        {
+          "name": "发起拼团\n\n<p>\n用户成为团长，创建一个新的拼团会话。\n</p>",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "x-www-form-urlencoded",
+              "formdata": []
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/group/initiate",
+              "protocol": "http",
+              "path": [
+                "api",
+                "v1",
+                "group",
+                "initiate"
+              ],
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "query": [],
+              "variable": []
+            },
+            "description": "发起拼团\n\n<p>\n用户成为团长，创建一个新的拼团会话。\n</p>",
+            "header": [
+              {
+                "key": "Authorization",
+                "type": "text",
+                "disabled": true,
+                "name": "Authorization",
+                "description": "认证Token (Bearer {jwt_token})"
+              }
+            ]
+          },
+          "description": "用户支付成功后调用此接口"
+        },
+        {
+          "name": "参与拼团\n\n<p>\n用户加入已有的拼团会话。\n</p>",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "x-www-form-urlencoded",
+              "formdata": []
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/group/join",
+              "protocol": "http",
+              "path": [
+                "api",
+                "v1",
+                "group",
+                "join"
+              ],
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "query": [],
+              "variable": []
+            },
+            "description": "参与拼团\n\n<p>\n用户加入已有的拼团会话。\n</p>",
+            "header": [
+              {
+                "key": "Authorization",
+                "type": "text",
+                "disabled": true,
+                "name": "Authorization",
+                "description": "认证Token (Bearer {jwt_token})"
+              }
+            ]
+          },
+          "description": "用户支付成功后调用此接口"
+        },
+        {
+          "name": "获取当前正在拼的团\n\n<p>\n返回指定商品正在进行的拼团会话列表。\n前端用于展示\"还有人在拼单\"功能。\n</p>",
+          "request": {
+            "method": "GET",
+            "body": {
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/group/:skuId/sessions",
+              "protocol": "http",
+              "path": [
+                "api",
+                "v1",
+                "group",
+                ":skuId",
+                "sessions"
+              ],
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "query": [],
+              "variable": [
+                {
+                  "key": "skuId",
+                  "value": "0",
+                  "description": "商品SKU ID"
+                }
+              ]
+            },
+            "description": "获取当前正在拼的团\n\n<p>\n返回指定商品正在进行的拼团会话列表。\n前端用于展示\"还有人在拼单\"功能。\n</p>",
+            "header": [
+              {
+                "key": "Authorization",
+                "type": "text",
+                "disabled": true,
+                "name": "Authorization",
+                "description": "认证Token (Bearer {jwt_token})"
+              }
+            ]
+          },
+          "description": "建议前端每10秒刷新一次，获取最新拼团状态"
+        }
+      ]
+    }
+  ]
+}
