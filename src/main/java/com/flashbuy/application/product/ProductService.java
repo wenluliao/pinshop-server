@@ -79,11 +79,19 @@ public class ProductService {
             result.add(new FlashProductDto(
                     sku.getId(),
                     spu.getName(),
+                    "", // subtitle
                     spu.getMainImage() != null ? spu.getMainImage() : "",
+                    List.of(spu.getMainImage()), // images
                     flashItem.getFlashPrice(),
+                    sku.getSalePrice() != null ? sku.getSalePrice() : sku.getMarketPrice(), // salePrice
                     sku.getMarketPrice(),
                     stockPercent,
-                    status
+                    flashItem.getFlashStock() - flashItem.getLockStock(), // stock
+                    0, // sales - TODO: from order statistics
+                    status,
+                    "", // flashEndTime
+                    List.of("秒杀", "限时"), // tags
+                    ""  // content
             ));
         }
 
@@ -120,18 +128,73 @@ public class ProductService {
             return null;
         }
 
+        // 解析图片列表
+        List<String> images = parseImages(spu.getDetailImages());
+
+        // 构建商品详情
         int stockPercent = (flashItem.getFlashStock() - flashItem.getLockStock()) * 100 / flashItem.getFlashStock();
         int status = (flashItem.getFlashStock() - flashItem.getLockStock()) > 0 ? 1 : 2;
+
+        // 模拟商品详情HTML内容
+        String content = buildProductContent(spu);
 
         return new FlashProductDto(
                 sku.getId(),
                 spu.getName(),
+                spu.getName() + " - " + sku.getSpecs(), // subtitle
                 spu.getMainImage() != null ? spu.getMainImage() : "",
+                images,
                 flashItem.getFlashPrice(),
+                sku.getSalePrice() != null ? sku.getSalePrice() : sku.getMarketPrice(), // salePrice
                 sku.getMarketPrice(),
                 stockPercent,
-                status
+                flashItem.getFlashStock() - flashItem.getLockStock(), // stock
+                0, // sales - TODO: from order statistics
+                status,
+                "", // flashEndTime - TODO: from flash_event.end_time
+                List.of("秒杀", "限时", "热卖"), // tags
+                content
         );
+    }
+
+    /**
+     * 解析图片列表
+     */
+    private List<String> parseImages(String detailImages) {
+        if (detailImages == null || detailImages.isEmpty()) {
+            return List.of();
+        }
+        try {
+            // detailImages is a JSON string like "[\"url1\",\"url2\"]"
+            if (detailImages.startsWith("[")) {
+                com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                return mapper.readValue(
+                    detailImages,
+                    new com.fasterxml.jackson.core.type.TypeReference<List<String>>() {}
+                );
+            }
+        } catch (Exception e) {
+            log.warn("Failed to parse detail images: {}", detailImages, e);
+        }
+        return List.of(detailImages);
+    }
+
+    /**
+     * 构建商品详情HTML内容
+     */
+    private String buildProductContent(ProductSpu spu) {
+        return """
+            <div class="product-detail">
+                <h2>商品介绍</h2>
+                <p>%s</p>
+                <h3>产品特点</h3>
+                <ul>
+                    <li>正品保证</li>
+                    <li>极速发货</li>
+                    <li>7天无理由退换</li>
+                </ul>
+            </div>
+            """.formatted(spu.getName());
     }
 
     /**
@@ -204,11 +267,19 @@ public class ProductService {
                 products.add(new FlashProductDto(
                     sku.getId(),
                     spu.getName(),
+                    "", // subtitle
                     spu.getMainImage() != null ? spu.getMainImage() : "",
+                    List.of(spu.getMainImage()), // images
                     price,
+                    sku.getSalePrice() != null ? sku.getSalePrice() : sku.getMarketPrice(),
                     sku.getMarketPrice(),
                     stockPercent,
-                    status
+                    flashItem != null ? flashItem.getFlashStock() : 0, // stock
+                    0, // sales
+                    status,
+                    "", // flashEndTime
+                    List.of(), // tags
+                    ""  // content
                 ));
             }
         }
@@ -255,11 +326,19 @@ public class ProductService {
                 products.add(new FlashProductDto(
                     sku.getId(),
                     spu.getName(),
+                    "", // subtitle
                     spu.getMainImage() != null ? spu.getMainImage() : "",
+                    List.of(spu.getMainImage()), // images
                     price,
+                    sku.getSalePrice() != null ? sku.getSalePrice() : sku.getMarketPrice(),
                     sku.getMarketPrice(),
                     stockPercent,
-                    status
+                    flashItem != null ? flashItem.getFlashStock() : 0, // stock
+                    0, // sales
+                    status,
+                    "", // flashEndTime
+                    List.of(), // tags
+                    ""  // content
                 ));
             }
         }

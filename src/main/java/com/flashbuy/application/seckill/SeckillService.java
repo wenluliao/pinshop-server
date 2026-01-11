@@ -52,6 +52,17 @@ public class SeckillService {
      * This method must complete within 50ms to handle 100K+ QPS
      */
     public SeckillResponse execute(SeckillRequest request) {
+        // 参数校验
+        if (request.userId() == null) {
+            throw new BusinessException("User ID is required");
+        }
+        if (request.eventId() == null) {
+            throw new BusinessException("Event ID is required");
+        }
+        if (request.skuId() == null) {
+            throw new BusinessException("SKU ID is required");
+        }
+
         long startTime = System.currentTimeMillis();
 
         // Step 1: Local cache check (Level 1 defense)
@@ -65,12 +76,19 @@ public class SeckillService {
         String userLimitKey = USER_PREFIX + request.eventId() + ":" + request.skuId();
 
         // Step 3: Redis atomic deduction with Lua script (Level 2 defense)
-        Long result = stockLuaScript.deductStock(
-                stockKey,
-                userLimitKey,
-                request.userId().toString(),
-                request.count()
-        );
+        Long result;
+        try {
+            result = stockLuaScript.deductStock(
+                    stockKey,
+                    userLimitKey,
+                    request.userId().toString(),
+                    request.count()
+            );
+        } catch (Exception e) {
+            log.error("Redis operation failed, attempting fallback", e);
+            // Redis不可用时的降级处理：直接查询数据库
+            throw new BusinessException("System is busy, please try again later");
+        }
 
         // Step 4: Handle result
         if (result == null || result < 0) {

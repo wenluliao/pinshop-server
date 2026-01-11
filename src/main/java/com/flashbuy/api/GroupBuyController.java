@@ -2,6 +2,8 @@ package com.flashbuy.api;
 
 import com.flashbuy.application.groupbuy.GroupBuyService;
 import com.flashbuy.application.groupbuy.GroupSessionDto;
+import com.flashbuy.application.groupbuy.InitiateGroupRequest;
+import com.flashbuy.application.groupbuy.JoinGroupRequest;
 import com.flashbuy.common.Result;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,19 +34,13 @@ public class GroupBuyController {
      * 用户成为团长，创建一个新的拼团会话。
      * </p>
      *
-     * @param ruleId 拼团规则ID
-     * @param userId 用户ID
-     * @param skuId 商品SKU ID
+     * @param request 拼团请求参数（包含规则ID、用户ID、商品SKU ID、地址ID）
      * @return 拼团会话ID
      * @apiNote 用户支付成功后调用此接口
      */
     @PostMapping("/initiate")
-    public Result<Long> initiate(
-            @RequestParam Long ruleId,
-            @RequestParam Long userId,
-            @RequestParam Long skuId
-    ) {
-        Long sessionId = groupBuyService.initiateGroup(ruleId, userId, skuId);
+    public Result<Long> initiate(@RequestBody InitiateGroupRequest request) {
+        Long sessionId = groupBuyService.initiateGroup(request.ruleId(), request.userId(), request.skuId());
         return Result.ok(sessionId);
     }
 
@@ -55,19 +51,13 @@ public class GroupBuyController {
      * 用户加入已有的拼团会话。
      * </p>
      *
-     * @param sessionId 拼团会话ID
-     * @param userId 用户ID
-     * @param skuId 商品SKU ID
+     * @param request 拼团请求参数（包含会话ID、用户ID、商品SKU ID、地址ID）
      * @return 成功或失败信息
      * @apiNote 用户支付成功后调用此接口
      */
     @PostMapping("/join")
-    public Result<Void> join(
-            @RequestParam Long sessionId,
-            @RequestParam Long userId,
-            @RequestParam Long skuId
-    ) {
-        groupBuyService.joinGroup(sessionId, userId, skuId);
+    public Result<Void> join(@RequestBody JoinGroupRequest request) {
+        groupBuyService.joinGroup(request.sessionId(), request.userId(), request.skuId());
         return Result.ok();
     }
 
